@@ -1,4 +1,5 @@
-using Confirmations.Api.Auth;
+﻿using Confirmations.Api.Auth;
+using Confirmations.Api.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,6 +38,8 @@ public static class DemoDataSeeder
                 await roleManager.CreateAsync(new IdentityRole(role));
         }
 
+        await SeedFakeOrdersAsync(db);
+
         var password = provider.GetRequiredService<IConfiguration>()["DemoUsers:Password"];
         if (string.IsNullOrWhiteSpace(password))
         {
@@ -63,6 +66,34 @@ public static class DemoDataSeeder
             if (!await userManager.IsInRoleAsync(user, role))
                 EnsureSucceeded(await userManager.AddToRoleAsync(user, role), email);
         }
+    }
+
+    /// <summary>
+    /// 20 made-up orders (MF-10001 to MF-10020) so order-ID checks can be
+    /// tested. Only added when there are no orders at all, so real orders
+    /// are never mixed with or overwritten by fake ones.
+    /// </summary>
+    private static async Task SeedFakeOrdersAsync(AppDbContext db)
+    {
+        if (await db.Orders.AnyAsync())
+            return;
+
+        string[] zones = ["North", "South", "East", "West", "Downtown"];
+        var firstDay = new DateOnly(2026, 11, 2);
+
+        for (var i = 1; i <= 20; i++)
+        {
+            db.Orders.Add(new Order
+            {
+                OrderNumber = $"MF-{10000 + i}",
+                Zone = zones[(i - 1) % zones.Length],
+                DeliverTo = $"Test Recipient {i}, {100 + i} Example St",
+                TotalProducts = 1 + (i % 4),
+                DeliveryDate = firstDay.AddDays((i - 1) / 4),
+            });
+        }
+
+        await db.SaveChangesAsync();
     }
 
     private static void EnsureSucceeded(IdentityResult result, string email)
