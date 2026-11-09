@@ -1,0 +1,17 @@
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.status {
+  font-weight: 600;
+}
+
+.status-ok {
+  color: #1a7f37;
+}
+
+.status-unavailable {
+  color: #cf222e;
+}

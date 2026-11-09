@@ -46,7 +46,17 @@ See [SETUP.md](SETUP.md) to run this on a Windows computer.
 ## Status
 
 - [x] Step 0 – Repository setup
-- [ ] Step 1 – Project setup (frontend, backend, tests)
+- [x] Step 1 – Project setup (frontend, backend, tests)
+
+## Project layout
+
+```
+backend/
+  Confirmations.slnx                 .NET solution
+  src/Confirmations.Api/             ASP.NET Core Web API
+  tests/Confirmations.Api.Tests/     xUnit tests
+frontend/                            React + TypeScript + Vite
+```
 - [ ] Step 2 – Login and roles
 - [ ] Step 3 – Database design
 - [ ] Step 4 – Upload and scan storage
