@@ -39,6 +39,19 @@ Test accounts are created automatically when the backend first starts. They cont
 
 **Passwords are not stored in this repo** (the repo is public). The host computer sets one demo password in .NET User Secrets – see [SETUP.md](SETUP.md), section 3. Ask the team chat for it.
 
+## Database (SQL Server Express)
+
+| Table | One row is… |
+|---|---|
+| `Orders` | An order the shop knows about (20 **fake** test orders `MF-10001`–`MF-10020` for now) |
+| `ScanDocuments` | One uploaded scan file (stored on disk; the database keeps its location and fingerprint) |
+| `OcrResults` | What Tesseract read from a scan, with a confidence score per field (never edited) |
+| `DeliveryConfirmations` | The employee-checked version of a scan; status Pending / Approved / Rejected / Flagged / Voided |
+| `ValidationFlags` | A problem to look at (missing field, duplicate, unknown order, no signature, …) |
+| `AuditLog` | Who did what and when (field names only, never names/addresses) |
+
+Rules the database enforces: one confirmation record per scan, one **approved** confirmation per order, unique order numbers, nothing permanently deleted, and simultaneous edits can't overwrite each other.
+
 ## Setup
 
 See [SETUP.md](SETUP.md) to run this on a Windows computer.
@@ -58,7 +71,7 @@ backend/
 frontend/                            React + TypeScript + Vite
 ```
 - [x] Step 2 – Login and roles
-- [ ] Step 3 – Database design
+- [x] Step 3 – Database design
 - [ ] Step 4 – Upload and scan storage
 - [ ] Step 5 – Tesseract OCR
 - [ ] Step 6 – Validation flags

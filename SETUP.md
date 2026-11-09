@@ -56,7 +56,7 @@ dotnet user-secrets set "ConnectionStrings:Confirmations" "Server=localhost\SQLE
 dotnet user-secrets set "DemoUsers:Password" "Your-Own-Demo-Passw0rd!" --project src/Confirmations.Api
 ```
 
-The first time the backend starts it **creates the database and tables automatically** and creates the demo accounts:
+Every time the backend starts it **creates or updates the database tables automatically**, adds 20 **fake** test orders (`MF-10001`–`MF-10020`) if there are no orders yet, and creates the demo accounts:
 
 | Email | Role | Can use the app? |
 |---|---|---|
