@@ -39,9 +39,39 @@ git clone https://github.com/CodeKakarotto/Delivery-Confirmation-Digitization.gi
 cd Delivery-Confirmation-Digitization
 ```
 
-## 3. Database, demo password, running the app
+## 3. Run the app locally
 
-_Added in Steps 1–3._
+Open **two** PowerShell windows in the repo folder.
+
+**Window 1 – backend (API):**
+
+```powershell
+cd backend
+dotnet run --project src/Confirmations.Api --launch-profile http
+```
+
+The API runs at http://localhost:5170. Check it: http://localhost:5170/api/health should show `{"status":"OK"}`.
+
+**Window 2 – frontend:**
+
+```powershell
+cd frontend
+npm install        # first time only
+npm run dev
+```
+
+Open http://localhost:5173. The page should say **API status: OK** (green). If it says **unavailable** (red), the backend in Window 1 isn't running.
+
+## 4. Run the tests
+
+```powershell
+cd backend;  dotnet test
+cd ..\frontend;  npm test
+```
+
+## 5. Database and demo password
+
+_Added in Steps 2–3._
 
 ## Security reminders
 
