@@ -1,0 +1,42 @@
+# ===== Secrets (never commit) =====
+.env
+.env.*
+!.env.example
+appsettings.*.json
+!appsettings.Example.json
+secrets.json
+*.pfx
+*.pem
+*.key
+
+# ===== Cloudflare Tunnel credentials =====
+.cloudflared/
+cloudflared/
+cert.pem
+tunnel-credentials*.json
+
+# ===== Scans, OCR output, backups (may contain customer data) =====
+scans/
+ScanStorage/
+uploads/
+ocr-output/
+*.bak
+backups/
+
+# ===== .NET =====
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+
+# ===== Node / Vite =====
+node_modules/
+dist/
+*.local
+npm-debug.log*
+
+# ===== OS / editor =====
+Thumbs.db
+.DS_Store
