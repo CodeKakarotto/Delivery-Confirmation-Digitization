@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Confirmations.Api.Controllers;
@@ -7,6 +8,7 @@ namespace Confirmations.Api.Controllers;
 /// confirmations, scans, or users, so it needs no login.
 /// </summary>
 [ApiController]
+[AllowAnonymous]
 [Route("api/health")]
 public class HealthController : ControllerBase
 {

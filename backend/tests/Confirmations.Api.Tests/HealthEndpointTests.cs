@@ -1,6 +1,5 @@
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Confirmations.Api.Tests;
 
@@ -8,11 +7,11 @@ namespace Confirmations.Api.Tests;
 /// Step 1: the API exposes a simple health check so the frontend
 /// (and the host teammate) can confirm the backend is running.
 /// </summary>
-public class HealthEndpointTests : IClassFixture<WebApplicationFactory<Program>>
+public class HealthEndpointTests : IClassFixture<TestWebAppFactory>
 {
     private readonly HttpClient _client;
 
-    public HealthEndpointTests(WebApplicationFactory<Program> factory)
+    public HealthEndpointTests(TestWebAppFactory factory)
     {
         _client = factory.CreateClient();
     }

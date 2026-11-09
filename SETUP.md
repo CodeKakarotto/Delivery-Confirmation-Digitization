@@ -39,7 +39,36 @@ git clone https://github.com/CodeKakarotto/Delivery-Confirmation-Digitization.gi
 cd Delivery-Confirmation-Digitization
 ```
 
-## 3. Run the app locally
+## 3. Database connection and demo password (one time)
+
+These are stored in **.NET User Secrets** on the host computer only – never in the repo.
+Run from the repo folder:
+
+```powershell
+cd backend
+
+# Where the database is (Windows Authentication – no password in it).
+# Change SQLEXPRESS if your SQL Server instance has a different name.
+dotnet user-secrets set "ConnectionStrings:Confirmations" "Server=localhost\SQLEXPRESS;Database=MichaelsFlowersConfirmations;Trusted_Connection=True;TrustServerCertificate=True" --project src/Confirmations.Api
+
+# Password for ALL three demo accounts. Pick your own and share it in the team chat.
+# Rules: at least 10 characters, with an uppercase letter, a lowercase letter, a number, and a symbol.
+dotnet user-secrets set "DemoUsers:Password" "Your-Own-Demo-Passw0rd!" --project src/Confirmations.Api
+```
+
+The first time the backend starts it **creates the database and tables automatically** and creates the demo accounts:
+
+| Email | Role | Can use the app? |
+|---|---|---|
+| `employee@demo.local` | Employee | Yes |
+| `manager@demo.local` | Manager | Yes (plus manager actions later) |
+| `driver@demo.local` | Driver | No – shown "Driver accounts can't use the delivery confirmation app." |
+
+To change the demo password later, run the `DemoUsers:Password` command again and restart the backend.
+
+> Your Windows account needs permission to create a database in SQL Server Express. The account that installed SQL Server Express has it by default.
+
+## 4. Run the app locally
 
 Open **two** PowerShell windows in the repo folder.
 
@@ -60,18 +89,18 @@ npm install        # first time only
 npm run dev
 ```
 
-Open http://localhost:5173. The page should say **API status: OK** (green). If it says **unavailable** (red), the backend in Window 1 isn't running.
+Open http://localhost:5173. You should see the **Sign in** form, and **API status: OK** (green) at the bottom. If it says **unavailable** (red), the backend in Window 1 isn't running.
 
-## 4. Run the tests
+Sign in with one of the demo accounts from section 3.
+
+## 5. Run the tests
 
 ```powershell
 cd backend;  dotnet test
 cd ..\frontend;  npm test
 ```
 
-## 5. Database and demo password
-
-_Added in Steps 2–3._
+Tests use a temporary in-memory database and their own test password, so they don't need SQL Server or User Secrets.
 
 ## Security reminders
 

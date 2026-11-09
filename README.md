@@ -29,15 +29,15 @@ One delivery per sheet, fields in one row, left to right:
 
 ## Demo login accounts
 
-Test accounts are created automatically when the app first runs (built in Step 2). They contain **fake data only**.
+Test accounts are created automatically when the backend first starts. They contain **fake data only**.
 
 | Username | Role |
 |---|---|
 | `employee@demo.local` | Employee |
 | `manager@demo.local` | Manager |
-| `driver@demo.local` | Driver (should be blocked) |
+| `driver@demo.local` | Driver (blocked – shown a message instead) |
 
-**Passwords are not stored in this repo** (the repo is public). The host computer sets one demo password in .NET User Secrets – see [SETUP.md](SETUP.md). Ask the team chat for it.
+**Passwords are not stored in this repo** (the repo is public). The host computer sets one demo password in .NET User Secrets – see [SETUP.md](SETUP.md), section 3. Ask the team chat for it.
 
 ## Setup
 
@@ -57,7 +57,7 @@ backend/
   tests/Confirmations.Api.Tests/     xUnit tests
 frontend/                            React + TypeScript + Vite
 ```
-- [ ] Step 2 – Login and roles
+- [x] Step 2 – Login and roles
 - [ ] Step 3 – Database design
 - [ ] Step 4 – Upload and scan storage
 - [ ] Step 5 – Tesseract OCR

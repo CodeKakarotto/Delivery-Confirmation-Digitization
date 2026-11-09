@@ -2,6 +2,72 @@
   max-width: 720px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  text-align: left;
+}
+
+.card {
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 360px;
+}
+
+.login label {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.login input {
+  font-size: 1.1rem;
+  padding: 0.6rem;
+  border: 1px solid #8c959f;
+  border-radius: 6px;
+}
+
+button {
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  border: 1px solid #8c959f;
+  background: #f6f8fa;
+  cursor: pointer;
+}
+
+button.primary {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  background: #1a7f37;
+  border-color: #1a7f37;
+  color: #fff;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.error {
+  color: #cf222e;
+  font-weight: 600;
+}
+
+.signed-in {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+footer {
+  font-size: 0.9rem;
 }
 
 .status {
