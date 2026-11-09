@@ -1,42 +1,40 @@
 import { useEffect, useState } from 'react'
+import { getCurrentUser, logout, type User } from './api'
+import { ApiStatus } from './ApiStatus'
+import { HomePage } from './HomePage'
+import { LoginPage } from './LoginPage'
 import './App.css'
 
-// Empty in local development (Vite proxies /api to the backend).
-// Set to the Cloudflare Tunnel API address in production (Step 10).
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
-
-type ApiStatus = 'checking' | 'OK' | 'unavailable'
-
 function App() {
-  const [apiStatus, setApiStatus] = useState<ApiStatus>('checking')
+  // undefined = still checking whether someone is already signed in
+  const [user, setUser] = useState<User | null | undefined>(undefined)
 
   useEffect(() => {
     let cancelled = false
-
-    async function checkHealth() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/health`)
-        const body = response.ok ? await response.json() : null
-        if (!cancelled) {
-          setApiStatus(body?.status === 'OK' ? 'OK' : 'unavailable')
-        }
-      } catch {
-        if (!cancelled) setApiStatus('unavailable')
-      }
-    }
-
-    checkHealth()
+    getCurrentUser().then((current) => {
+      if (!cancelled) setUser(current)
+    })
     return () => {
       cancelled = true
     }
   }, [])
 
+  async function handleSignOut() {
+    await logout()
+    setUser(null)
+  }
+
   return (
     <main className="app">
       <h1>Michael's Flowers – Delivery Confirmations</h1>
-      <p className={`status status-${apiStatus.toLowerCase()}`}>
-        API status: {apiStatus}
-      </p>
+
+      {user === undefined && <p>Loading…</p>}
+      {user === null && <LoginPage onSignedIn={setUser} />}
+      {user && <HomePage user={user} onSignOut={handleSignOut} />}
+
+      <footer>
+        <ApiStatus />
+      </footer>
     </main>
   )
 }

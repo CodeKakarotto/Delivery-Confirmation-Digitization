@@ -9,8 +9,10 @@ afterEach(() => {
 
 describe('App health check', () => {
   it('shows "API status: OK" when the backend responds', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(JSON.stringify({ status: 'OK' }), { status: 200 }),
+    // A fresh Response per call: the page now makes more than one request
+    // on load, and a Response body can only be read once.
+    const fetchMock = vi.fn(
+      async () => new Response(JSON.stringify({ status: 'OK' }), { status: 200 }),
     )
     vi.stubGlobal('fetch', fetchMock)
 
