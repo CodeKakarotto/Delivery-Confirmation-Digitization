@@ -16,12 +16,12 @@ function isUser(value: unknown): value is User {
   return typeof v.email === 'string' && (v.role === 'Employee' || v.role === 'Manager')
 }
 
-function messageFrom(body: unknown): string {
+function messageFrom(body: unknown, fallback: string = GENERIC_LOGIN_ERROR): string {
   if (typeof body === 'object' && body !== null) {
     const message = (body as Record<string, unknown>).message
     if (typeof message === 'string' && message.length > 0) return message
   }
-  return GENERIC_LOGIN_ERROR
+  return fallback
 }
 
 export async function checkHealth(): Promise<boolean> {
@@ -59,6 +59,59 @@ export async function login(email: string, password: string): Promise<LoginResul
     return { ok: false, message: messageFrom(body) }
   } catch {
     return { ok: false, message: NETWORK_ERROR }
+  }
+}
+
+export type UploadResult = {
+  fileName: string
+  saved: boolean
+  duplicate: boolean
+  message: string
+}
+
+const SIGN_IN_EXPIRED = 'Your sign-in has expired. Please sign out and sign in again.'
+const GENERIC_UPLOAD_ERROR = 'Upload failed. Please try again.'
+
+function isUploadResult(value: unknown): value is UploadResult {
+  if (typeof value !== 'object' || value === null) return false
+  const v = value as Record<string, unknown>
+  return (
+    typeof v.fileName === 'string' &&
+    typeof v.saved === 'boolean' &&
+    typeof v.duplicate === 'boolean' &&
+    typeof v.message === 'string'
+  )
+}
+
+/** Uploads one scanned sheet. Always resolves with a result to show the employee. */
+export async function uploadScan(file: File): Promise<UploadResult> {
+  const failed = (message: string): UploadResult => ({
+    fileName: file.name,
+    saved: false,
+    duplicate: false,
+    message,
+  })
+
+  try {
+    const form = new FormData()
+    form.append('files', file)
+    const response = await fetch(`${API_BASE_URL}/api/scans`, {
+      method: 'POST',
+      credentials: 'include',
+      body: form,
+    })
+    if (response.status === 401 || response.status === 403) return failed(SIGN_IN_EXPIRED)
+    if (response.status === 413) return failed('This file is larger than 10 MB.')
+
+    const body: unknown = await response.json().catch(() => null)
+    if (response.ok) {
+      const results = (body as { results?: unknown[] } | null)?.results
+      const first = Array.isArray(results) ? results[0] : undefined
+      return isUploadResult(first) ? first : failed(GENERIC_UPLOAD_ERROR)
+    }
+    return failed(messageFrom(body, GENERIC_UPLOAD_ERROR))
+  } catch {
+    return failed(NETWORK_ERROR)
   }
 }
 

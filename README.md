@@ -72,7 +72,7 @@ frontend/                            React + TypeScript + Vite
 ```
 - [x] Step 2 – Login and roles
 - [x] Step 3 – Database design
-- [ ] Step 4 – Upload and scan storage
+- [x] Step 4 – Upload and scan storage (JPEG/PNG; PDF not supported yet)
 - [ ] Step 5 – Tesseract OCR
 - [ ] Step 6 – Validation flags
 - [ ] Step 7 – Review screen

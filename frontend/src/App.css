@@ -66,6 +66,56 @@ button:disabled {
   flex-wrap: wrap;
 }
 
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+button.tile {
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 2rem 1rem;
+  background: #1a7f37;
+  border-color: #1a7f37;
+  color: #fff;
+}
+
+.file-picker {
+  display: inline-block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.8rem 1.4rem;
+  border-radius: 6px;
+  border: 2px dashed #8c959f;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.results {
+  list-style: none;
+  padding: 0;
+}
+
+.results li {
+  padding: 0.6rem 0.8rem;
+  margin: 0.4rem 0;
+  border-radius: 6px;
+  word-break: break-word;
+}
+
+.result-ok {
+  background: #dafbe1;
+}
+
+.result-warn {
+  background: #fff8c5;
+}
+
+.result-bad {
+  background: #ffebe9;
+}
+
 footer {
   font-size: 0.9rem;
 }
