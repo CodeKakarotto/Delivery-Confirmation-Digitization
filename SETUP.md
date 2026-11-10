@@ -120,6 +120,17 @@ cd ..\frontend;  npm test
 
 Tests use a temporary in-memory database and their own test password, so they don't need SQL Server or User Secrets.
 
+## 6. Troubleshooting
+
+| You see | What to do |
+|---|---|
+| `'dotnet' is not recognized` or `'npm' is not recognized` | The terminal was opened before .NET or Node.js was installed. **Close VS Code (or PowerShell) completely and open it again.** If it still happens, re-run the installer. |
+| Page says **API status: unavailable** (red) | The backend isn't running. Start Window 1 (section 4). |
+| Backend stops with `Connection string 'Confirmations' is not set` | Run the first command in section 3. |
+| Sign-in always says **Incorrect email or password** | Run the `DemoUsers:Password` command in section 3, then restart the backend. |
+| `Too many wrong passwords` | Wait 5 minutes and try again. |
+| Backend says the port is already in use | The backend is already running in another window. Close that window or use it. |
+
 ## Security reminders
 
 - Never commit passwords, connection strings, scans, or tunnel credentials.
