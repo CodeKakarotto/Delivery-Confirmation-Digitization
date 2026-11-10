@@ -1,5 +1,6 @@
 using Confirmations.Api.Auth;
 using Confirmations.Api.Data;
+using Confirmations.Api.Scans;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,6 +55,12 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddConfirmationPolicies();
+
+// Scan uploads: private folder on the host computer (see SETUP.md).
+builder.Services.Configure<ScanStorageOptions>(builder.Configuration.GetSection("ScanStorage"));
+builder.Services.AddSingleton<IScanStorage, FileSystemScanStorage>();
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddScoped<ScanUploadService>();
 
 var app = builder.Build();
 

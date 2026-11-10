@@ -18,6 +18,8 @@ tunnel-credentials*.json
 # ===== Scans, OCR output, backups (may contain customer data) =====
 scans/
 ScanStorage/
+# ...but not the upload *source code* folder (Windows ignores letter case)
+!backend/src/Confirmations.Api/Scans/
 uploads/
 ocr-output/
 *.bak

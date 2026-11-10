@@ -68,6 +68,24 @@ To change the demo password later, run the `DemoUsers:Password` command again an
 
 > Your Windows account needs permission to create a database in SQL Server Express. The account that installed SQL Server Express has it by default.
 
+### Where uploaded scans are stored
+
+Scans are saved (with hidden photo metadata such as GPS location removed) in a **private folder**:
+
+```
+%LOCALAPPDATA%\MichaelsFlowers\Scans
+```
+
+The folder is created automatically. It is never served directly to the internet – scans can only be viewed through the app by a signed-in Employee or Manager. To use a different folder:
+
+```powershell
+dotnet user-secrets set "ScanStorage:Folder" "D:\MichaelsFlowersData\Scans" --project src/Confirmations.Api
+```
+
+**Back up this folder together with the database** (Step 11 adds a backup script).
+
+Upload rules: JPEG or PNG only (checked from the file's contents, not its name), one delivery sheet per file, up to 10 MB each.
+
 ## 4. Run the app locally
 
 Open **two** PowerShell windows in the repo folder.

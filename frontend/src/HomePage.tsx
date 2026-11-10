@@ -1,19 +1,15 @@
-import type { User } from './api'
+type Props = { onOpenUpload: () => void }
 
-type Props = { user: User; onSignOut: () => void }
-
-export function HomePage({ user, onSignOut }: Props) {
+/** Home screen: one big button per job. More buttons arrive with later steps. */
+export function HomePage({ onOpenUpload }: Props) {
   return (
     <section className="card">
-      <div className="signed-in">
-        <span>
-          Signed in as {user.email} ({user.role})
-        </span>
-        <button type="button" onClick={onSignOut}>
-          Sign out
+      <h2>What would you like to do?</h2>
+      <div className="tiles">
+        <button type="button" className="tile" onClick={onOpenUpload}>
+          Scan delivery sheets
         </button>
       </div>
-      <p>Welcome! The delivery confirmation screens will appear here.</p>
     </section>
   )
 }
