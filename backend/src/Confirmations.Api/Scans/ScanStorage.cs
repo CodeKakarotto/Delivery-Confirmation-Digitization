@@ -10,6 +10,9 @@ public interface IScanStorage
 
     /// <summary>Opens a stored scan, or null if it doesn't exist.</summary>
     Stream? OpenRead(string storedFileName);
+
+    /// <summary>Full path of a stored scan (for Tesseract), or null if it doesn't exist.</summary>
+    string? GetFullPath(string storedFileName);
 }
 
 /// <summary>Keeps scans in a private folder on the host computer.</summary>
@@ -34,6 +37,12 @@ public class FileSystemScanStorage : IScanStorage
 
     public Stream? OpenRead(string storedFileName)
     {
+        var fullPath = GetFullPath(storedFileName);
+        return fullPath is null ? null : new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+    }
+
+    public string? GetFullPath(string storedFileName)
+    {
         // Names come from our database, but check anyway that they can't point outside the folder.
         if (string.IsNullOrWhiteSpace(storedFileName) || Path.GetFileName(storedFileName) != storedFileName)
             return null;
@@ -43,6 +52,6 @@ public class FileSystemScanStorage : IScanStorage
             || !File.Exists(fullPath))
             return null;
 
-        return new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        return fullPath;
     }
 }

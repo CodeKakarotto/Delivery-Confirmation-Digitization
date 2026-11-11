@@ -28,6 +28,8 @@ public class TestWebAppFactory : WebApplicationFactory<Program>
         builder.UseSetting("ConnectionStrings:Confirmations", "Server=not-used-in-tests");
         builder.UseSetting("DemoUsers:Password", DemoPassword);
         builder.UseSetting("ScanStorage:Folder", ScanFolder);
+        // Tests run OCR explicitly; the background reader is off unless a test turns it on.
+        builder.UseSetting("Ocr:RunInBackground", "false");
 
         builder.ConfigureServices(services =>
         {

@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using Confirmations.Api.Data;
 using Confirmations.Api.Data.Entities;
+using Confirmations.Api.Ocr;
 using Microsoft.EntityFrameworkCore;
 
 namespace Confirmations.Api.Scans;
@@ -10,9 +11,9 @@ public sealed record ScanUploadResult(string FileName, bool Saved, Guid? ScanId,
 
 /// <summary>
 /// Checks one uploaded file, removes hidden metadata, stores it privately,
-/// and creates a Pending record for an employee to review.
+/// creates a Pending record for an employee to review, and queues it for OCR.
 /// </summary>
-public class ScanUploadService(AppDbContext db, IScanStorage storage, TimeProvider clock)
+public class ScanUploadService(AppDbContext db, IScanStorage storage, TimeProvider clock, OcrQueue ocrQueue)
 {
     public const string Saved = "Saved.";
     public const string Empty = "This file is empty.";
@@ -101,6 +102,7 @@ public class ScanUploadService(AppDbContext db, IScanStorage storage, TimeProvid
             Timestamp = now,
         });
         await db.SaveChangesAsync(cancellationToken);
+        ocrQueue.Enqueue(scan.Id); // read in the background; the upload doesn't wait
 
         return new ScanUploadResult(fileName, true, scan.Id, duplicate,
             duplicate ? "Saved. This exact file was uploaded before, so it's marked for a second look." : Saved);
