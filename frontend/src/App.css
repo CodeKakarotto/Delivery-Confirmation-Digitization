@@ -1,62 +1,73 @@
 .app {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 1.25rem 3rem;
   text-align: left;
 }
 
+/* ---------- Cards (white boxes) ---------- */
+
 .card {
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 1.5rem 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.75rem;
+  margin: 1.25rem 0;
+  box-shadow: 0 1px 3px rgba(31, 35, 40, 0.08);
 }
 
-.login {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  max-width: 360px;
-}
+/* ---------- Buttons ---------- */
 
-.login label {
-  font-weight: 600;
-  margin-top: 0.5rem;
-}
-
-.login input {
-  font-size: 1.1rem;
-  padding: 0.6rem;
-  border: 1px solid #8c959f;
-  border-radius: 6px;
-}
-
+/* Every button is a solid, high-contrast block so it never blends into the page. */
 button {
+  font: inherit;
   font-size: 1rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  border: 1px solid #8c959f;
-  background: #f6f8fa;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 2px solid var(--dark);
+  background: var(--dark);
+  color: #fff;
   cursor: pointer;
 }
 
+button:hover {
+  background: var(--dark-hover);
+  border-color: var(--dark-hover);
+}
+
+button.primary,
+button.tile {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+button.primary:hover,
+button.tile:hover {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+}
+
 button.primary {
-  margin-top: 1rem;
   font-size: 1.1rem;
-  background: #1a7f37;
-  border-color: #1a7f37;
-  color: #fff;
+  padding: 0.85rem 2rem;
 }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: wait;
+button:focus-visible,
+.file-row:has(input:focus-visible) .file-picker {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
-.error {
-  color: #cf222e;
-  font-weight: 600;
+button:disabled,
+button:disabled:hover {
+  background: #8c959f;
+  border-color: #8c959f;
+  cursor: not-allowed;
 }
+
+/* ---------- Signed-in bar ---------- */
 
 .signed-in {
   display: flex;
@@ -64,70 +75,156 @@ button:disabled {
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 0.75rem 0.75rem 1.25rem;
 }
+
+/* ---------- Sign-in form ---------- */
+
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 380px;
+}
+
+.login label {
+  font-weight: 600;
+  margin-top: 0.6rem;
+}
+
+.login input {
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #8c959f;
+  border-radius: 8px;
+}
+
+.login button.primary {
+  margin-top: 1.25rem;
+  align-self: flex-start;
+}
+
+.error {
+  color: var(--red);
+  font-weight: 600;
+  margin: 0.75rem 0 0;
+}
+
+/* ---------- Home screen tiles ---------- */
 
 .tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
+  margin-top: 1rem;
 }
 
 button.tile {
   font-size: 1.3rem;
-  font-weight: 600;
   padding: 2rem 1rem;
-  background: #1a7f37;
-  border-color: #1a7f37;
-  color: #fff;
+}
+
+/* ---------- Scan delivery sheets page ---------- */
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.file-row p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* The real file input is hidden; the dashed box is what people click. */
+.file-row input[type='file'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .file-picker {
   display: inline-block;
   font-size: 1.1rem;
   font-weight: 600;
-  padding: 0.8rem 1.4rem;
-  border-radius: 6px;
-  border: 2px dashed #8c959f;
+  padding: 0.85rem 1.5rem;
+  border-radius: 8px;
+  border: 2px dashed var(--dark);
+  color: var(--dark);
+  background: #f6f8fa;
   cursor: pointer;
-  margin-right: 0.5rem;
+}
+
+.file-picker:hover {
+  background: #eaeef2;
+}
+
+.uploading {
+  margin: 0.75rem 0 0;
+  font-weight: 600;
 }
 
 .results {
   list-style: none;
   padding: 0;
+  margin: 1.5rem 0 0;
 }
 
 .results li {
-  padding: 0.6rem 0.8rem;
-  margin: 0.4rem 0;
-  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  border-left: 5px solid;
   word-break: break-word;
 }
 
-.result-ok {
+.results li.result-ok {
   background: #dafbe1;
+  border-left-color: var(--green);
 }
 
-.result-warn {
+.results li.result-warn {
   background: #fff8c5;
+  border-left-color: #9a6700;
 }
 
-.result-bad {
+.results li.result-bad {
   background: #ffebe9;
+  border-left-color: var(--red);
 }
+
+.page-actions {
+  margin: 2rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ---------- Footer ---------- */
 
 footer {
+  margin-top: 2rem;
   font-size: 0.9rem;
+  color: var(--muted);
 }
 
 .status {
   font-weight: 600;
+  margin: 0;
 }
 
 .status-ok {
-  color: #1a7f37;
+  color: var(--green);
 }
 
 .status-unavailable {
-  color: #cf222e;
+  color: var(--red);
 }
