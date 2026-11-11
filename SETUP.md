@@ -104,6 +104,8 @@ The reader expects the ticket layout below (one delivery per sheet). The heading
 
 What it reads is only a **suggestion**: it fills the Pending record, and a person must check and approve it. If a sheet can't be read, the record is marked "OCR failed" and still waits for manual entry.
 
+Right after reading, each sheet is **checked for problems**, which are shown as plain-English flags (they never approve or reject anything): a missing field, an order ID that isn't in the order list, an order that already has an approved confirmation, another sheet for the same order, a product count that isn't a whole number above 0, no signature mark, a field that was hard to read (confidence below 80%), or a sheet that couldn't be read. Fixed problems are marked resolved, not deleted.
+
 ## 4. Run the app locally
 
 **Easiest:** double-click **`Start-App.bat`** in the repo folder. It opens two windows ("Backend" and "Website" – keep them open), waits until the app is ready, and opens http://localhost:5173 in your browser. To stop the app, close those two windows.

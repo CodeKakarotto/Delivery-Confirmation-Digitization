@@ -1,5 +1,6 @@
 using System.Threading.Channels;
 using Confirmations.Api.Data;
+using Confirmations.Api.Validation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -39,6 +40,9 @@ public class OcrBackgroundService(
                 .OrderBy(s => s.UploadedAt).Select(s => s.Id).ToListAsync(stoppingToken);
             foreach (var id in unread)
                 queue.Enqueue(id);
+
+            // Re-check records that were read before (e.g. before problem checks existed).
+            await scope.ServiceProvider.GetRequiredService<ConfirmationValidator>().CheckAllWaitingAsync(stoppingToken);
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
