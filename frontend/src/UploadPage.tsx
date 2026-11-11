@@ -30,24 +30,26 @@ export function UploadPage({ onBack }: Props) {
         per file, up to 10 MB each.
       </p>
 
-      <label htmlFor="scan-files" className="file-picker">
-        Choose files
-      </label>
-      <input
-        id="scan-files"
-        type="file"
-        multiple
-        accept="image/jpeg,image/png"
-        onChange={(e) => {
-          setFiles(Array.from(e.target.files ?? []))
-          setResults([])
-        }}
-      />
-      <p>
-        {files.length === 0
-          ? 'No files chosen yet.'
-          : `${files.length} ${files.length === 1 ? 'file' : 'files'} chosen`}
-      </p>
+      <div className="file-row">
+        <label htmlFor="scan-files" className="file-picker">
+          Choose files
+        </label>
+        <input
+          id="scan-files"
+          type="file"
+          multiple
+          accept="image/jpeg,image/png"
+          onChange={(e) => {
+            setFiles(Array.from(e.target.files ?? []))
+            setResults([])
+          }}
+        />
+        <p>
+          {files.length === 0
+            ? 'No files chosen yet.'
+            : `${files.length} ${files.length === 1 ? 'file' : 'files'} chosen`}
+        </p>
+      </div>
 
       <button
         type="button"
@@ -57,7 +59,7 @@ export function UploadPage({ onBack }: Props) {
       >
         Upload
       </button>
-      {busy && <p>Uploading… please wait.</p>}
+      {busy && <p className="uploading">Uploading… please wait.</p>}
 
       {results.length > 0 && (
         <ul className="results">
@@ -75,11 +77,11 @@ export function UploadPage({ onBack }: Props) {
         </ul>
       )}
 
-      <p>
+      <div className="page-actions">
         <button type="button" onClick={onBack}>
-          Back
+          <span aria-hidden="true">←</span> Back
         </button>
-      </p>
+      </div>
     </section>
   )
 }
