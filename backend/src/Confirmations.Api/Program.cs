@@ -1,6 +1,7 @@
 using Confirmations.Api.Auth;
 using Confirmations.Api.Data;
 using Confirmations.Api.Ocr;
+using Confirmations.Api.Review;
 using Confirmations.Api.Scans;
 using Confirmations.Api.Validation;
 using Microsoft.AspNetCore.Identity;
@@ -77,6 +78,7 @@ else
 builder.Services.AddScoped<TicketReader>();
 builder.Services.AddScoped<OcrProcessor>();
 builder.Services.AddScoped<ConfirmationValidator>();
+builder.Services.AddScoped<ReviewService>();
 builder.Services.AddSingleton<OcrQueue>();
 builder.Services.AddHostedService<OcrBackgroundService>();
 

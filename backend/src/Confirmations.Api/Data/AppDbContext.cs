@@ -80,6 +80,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             confirmation.Property(c => c.DeliveryInstructions).HasMaxLength(1000);
             confirmation.Property(c => c.ManagerNote).HasMaxLength(1000);
             confirmation.Property(c => c.VoidReason).HasMaxLength(1000);
+            confirmation.Property(c => c.ExceptionNotes).HasMaxLength(500);
+            confirmation.Property(c => c.ReviewerNote).HasMaxLength(500);
             confirmation.Property(c => c.Version).IsConcurrencyToken();
 
             confirmation.HasOne<IdentityUser>().WithMany().HasForeignKey(c => c.ReviewedByUserId).OnDelete(DeleteBehavior.Restrict);

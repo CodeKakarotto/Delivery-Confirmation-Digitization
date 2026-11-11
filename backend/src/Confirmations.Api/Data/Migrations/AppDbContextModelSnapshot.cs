@@ -81,6 +81,10 @@ namespace Confirmations.Api.Data.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("ExceptionNotes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("ManagerNote")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
@@ -103,6 +107,10 @@ namespace Confirmations.Api.Data.Migrations
 
                     b.Property<string>("ReviewedByUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ReviewerNote")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<Guid>("ScanDocumentId")
                         .HasColumnType("uniqueidentifier");
