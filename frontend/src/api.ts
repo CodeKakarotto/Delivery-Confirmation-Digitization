@@ -115,6 +115,55 @@ export async function uploadScan(file: File): Promise<UploadResult> {
   }
 }
 
+/** One saved scan in a list. status: 'Reading' (not read yet), 'Read', or 'Failed'. */
+export type ScanSummary = {
+  scanId: string
+  fileName: string
+  uploadedAt: string
+  status: 'Reading' | 'Read' | 'Failed'
+  zone: string | null
+  orderNumber: string | null
+  deliverTo: string | null
+  totalProducts: number | null
+  deliveryInstructions: string | null
+  openFlags: number
+  /** A person's decision: 'Waiting for review', 'Confirmed', 'Denied', 'Sent to manager', 'Voided'. */
+  reviewStatus?: string
+  /** Short labels for the "Exceptions / notes" column. */
+  exceptions?: string[]
+}
+
+/** Address of a scan's picture. Only works for a signed-in Employee or Manager. */
+export const scanImageUrl = (scanId: string) => `${API_BASE_URL}/api/scans/${encodeURIComponent(scanId)}/image`
+
+function isScanSummary(value: unknown): value is ScanSummary {
+  if (typeof value !== 'object' || value === null) return false
+  const v = value as Record<string, unknown>
+  return (
+    typeof v.scanId === 'string' &&
+    typeof v.fileName === 'string' &&
+    typeof v.uploadedAt === 'string' &&
+    (v.status === 'Reading' || v.status === 'Read' || v.status === 'Failed')
+  )
+}
+
+async function getScanList(path: string): Promise<ScanSummary[] | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}${path}`, { credentials: 'include' })
+    if (!response.ok) return null
+    const body: unknown = await response.json()
+    return Array.isArray(body) ? body.filter(isScanSummary) : null
+  } catch {
+    return null
+  }
+}
+
+/** Most recently saved uploads, newest first. Null if they can't be loaded. */
+export const getRecentScans = () => getScanList('/api/scans/recent')
+
+/** Every scan from the last 12 weeks, newest first. Null if they can't be loaded. */
+export const getScanHistory = () => getScanList('/api/scans/history')
+
 export async function logout(): Promise<void> {
   try {
     await fetch(`${API_BASE_URL}/api/auth/logout`, { method: 'POST', credentials: 'include' })

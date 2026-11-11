@@ -1,5 +1,5 @@
 .app {
-  max-width: 760px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1.25rem 3rem;
   text-align: left;
@@ -206,6 +206,281 @@ button.tile {
   margin: 2rem 0 0;
   padding-top: 1.25rem;
   border-top: 1px solid var(--border);
+}
+
+/* ---------- Tables (Orders box, All scans) ---------- */
+
+.muted {
+  color: var(--muted);
+}
+
+.orders-box {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: #f6f8fa;
+}
+
+.orders-box h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.2rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  font-size: 0.95rem;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: break-word; /* long words wrap only when they must */
+}
+
+/* Short values (number, zone, order ID, count, time) stay on one line. */
+.data-table .nowrap {
+  white-space: nowrap;
+}
+
+.data-table th {
+  background: #eaeef2;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.row-failed {
+  background: #ffebe9;
+}
+
+.tag {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tag-wait {
+  color: #9a6700;
+}
+
+.tag-bad {
+  color: var(--red);
+}
+
+.result-text-ok {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.result-text-bad {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.result-text-wait {
+  color: #9a6700;
+  font-weight: 600;
+}
+
+.tag-inline {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.exceptions-cell {
+  font-size: 0.85rem;
+  max-width: 12rem;
+}
+
+.chip {
+  display: inline-block;
+  margin: 0 0.25rem 0.25rem 0;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #fff8c5;
+  border: 1px solid #d4a72c;
+  color: #4d2d00;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Rows open the scanned sheet when clicked. */
+.clickable-rows tbody tr {
+  cursor: pointer;
+}
+
+.clickable-rows tbody tr:hover {
+  background: #ddf4ff;
+}
+
+button.link-button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #0969da;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+button.link-button:hover {
+  background: none;
+  color: #0550ae;
+}
+
+/* ---------- Scanned sheet viewer (pop-up) ---------- */
+
+.viewer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 35, 40, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.viewer {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 1100px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.viewer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.viewer-header h2 {
+  margin: 0;
+}
+
+.viewer-status {
+  margin: 0.75rem 0 1rem;
+}
+
+.review-badge {
+  display: inline-block;
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.review-ok {
+  background: #dafbe1;
+  color: var(--green);
+}
+
+.review-bad {
+  background: #ffebe9;
+  color: var(--red);
+}
+
+.review-wait {
+  background: #fff8c5;
+  color: #9a6700;
+}
+
+.review-neutral {
+  background: #eaeef2;
+  color: var(--text);
+}
+
+.viewer-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.viewer-fields {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1.25rem 0 0;
+}
+
+.viewer-fields dt {
+  font-weight: 600;
+}
+
+.viewer-fields dd {
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+/* ---------- All scans: weeks and days ---------- */
+
+.groups {
+  margin-top: 1rem;
+}
+
+.group {
+  margin: 0.5rem 0;
+}
+
+button.group-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  text-align: left;
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--dark);
+}
+
+button.group-toggle:hover {
+  background: #eaeef2;
+  border-color: var(--dark);
+}
+
+button.group-toggle[aria-expanded='true'] {
+  background: var(--dark);
+  color: #fff;
+}
+
+button.day-toggle {
+  border-width: 1px;
+  font-size: 0.95rem;
+}
+
+.group-title::before {
+  content: '▸ ';
+}
+
+[aria-expanded='true'] > .group-title::before {
+  content: '▾ ';
+}
+
+.group-counts {
+  font-weight: 400;
+}
+
+.group-body {
+  margin: 0.5rem 0 0.75rem 1.25rem;
 }
 
 /* ---------- Footer ---------- */

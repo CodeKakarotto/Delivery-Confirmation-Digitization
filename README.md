@@ -39,6 +39,16 @@ Test accounts are created automatically when the backend first starts. They cont
 
 **Passwords are not stored in this repo** (the repo is public). The host computer sets one demo password in .NET User Secrets – see [SETUP.md](SETUP.md), section 3. Ask the team chat for it.
 
+## Screens so far
+
+| Screen | What it shows |
+|---|---|
+| **Scan delivery sheets** | Upload pictures of the paper sheets. Below it, the **Orders** box lists recently saved uploads (# · Zone · Order ID · Deliver to · Total products · Delivery instructions · Exceptions / notes) and updates by itself while sheets are being read. |
+| **See all scans** | Everything scanned in the last 12 weeks, grouped **by week**; click a week to see its **days**, click a day to see each scan with the **time it was recorded**, whether it was read (✓) or couldn't be read (✗), and its exceptions. |
+| **Sheet viewer** | Click any scan in either list to see the **scanned paper sheet itself**, whether it is **Confirmed, Denied, or Waiting for review**, and everything read from it. |
+
+The **Order ID** is never blank: it shows the ID, "Reading…", or a red **Missing**. The **Exceptions / notes** column shows delivery exceptions spotted in the instructions (Left at door, Left with neighbor, Nobody home, Refused, Returned to shop) and problems found (No signature, Order not found, Duplicate order, …). A typed notes field comes with the review screen (Step 7).
+
 ## Database (SQL Server Express)
 
 | Table | One row is… |
