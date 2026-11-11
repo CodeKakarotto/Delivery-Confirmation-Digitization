@@ -63,7 +63,7 @@ See [SETUP.md](SETUP.md) to run this on a Windows computer.
 - [x] Step 2 – Login and roles
 - [x] Step 3 – Database design
 - [x] Step 4 – Upload and scan storage (JPEG/PNG; PDF not supported yet)
-- [ ] Step 5 – Tesseract OCR
+- [x] Step 5 – Tesseract OCR (background reading; 10/10 fields correct on 10 fake tickets)
 - [ ] Step 6 – Validation flags
 - [ ] Step 7 – Review screen
 - [ ] Step 8 – Search dashboard

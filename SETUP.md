@@ -86,9 +86,29 @@ dotnet user-secrets set "ScanStorage:Folder" "D:\MichaelsFlowersData\Scans" --pr
 
 Upload rules: JPEG or PNG only (checked from the file's contents, not its name), one delivery sheet per file, up to 10 MB each.
 
+### Reading sheets (Tesseract OCR)
+
+Every uploaded sheet is read **automatically in the background** a few seconds after upload (uploads never wait for it). Scans left unread when the backend was off are read when it starts again. Tesseract runs on this computer only – scans are never sent anywhere.
+
+The backend expects Tesseract at `C:\Program Files\Tesseract-OCR\tesseract.exe`. If it is installed somewhere else:
+
+```powershell
+dotnet user-secrets set "Ocr:TesseractPath" "D:\Tools\Tesseract-OCR\tesseract.exe" --project src/Confirmations.Api
+```
+
+The reader expects the ticket layout below (one delivery per sheet). The headings must be printed exactly like this; values go underneath:
+
+| ZONE | ORDER ID | DELIVER TO | TOTAL PRODUCTS | DELIVERY INSTRUCTIONS |
+|---|---|---|---|---|
+| North | MF-10003 | Test Recipient 3<br>103 Example St | 4 | Leave at side door<br><br>Received by: *(signature on the line below)* |
+
+What it reads is only a **suggestion**: it fills the Pending record, and a person must check and approve it. If a sheet can't be read, the record is marked "OCR failed" and still waits for manual entry.
+
 ## 4. Run the app locally
 
-Open **two** PowerShell windows in the repo folder.
+**Easiest:** double-click **`Start-App.bat`** in the repo folder. It opens two windows ("Backend" and "Website" – keep them open), waits until the app is ready, and opens http://localhost:5173 in your browser. To stop the app, close those two windows.
+
+**By hand** (if you prefer): open **two** PowerShell windows in the repo folder.
 
 **Window 1 – backend (API):**
 
@@ -129,6 +149,7 @@ Tests use a temporary in-memory database and their own test password, so they do
 | Backend stops with `Connection string 'Confirmations' is not set` | Run the first command in section 3. |
 | Sign-in always says **Incorrect email or password** | Run the `DemoUsers:Password` command in section 3, then restart the backend. |
 | `Too many wrong passwords` | Wait 5 minutes and try again. |
+| Every sheet is marked "OCR failed" | Check Tesseract is installed (section 1) and the path above is right, then restart the backend. |
 | Backend says the port is already in use | The backend is already running in another window. Close that window or use it. |
 
 ## Security reminders

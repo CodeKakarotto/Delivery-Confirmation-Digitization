@@ -1,5 +1,6 @@
 using Confirmations.Api.Auth;
 using Confirmations.Api.Data;
+using Confirmations.Api.Ocr;
 using Confirmations.Api.Scans;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +62,21 @@ builder.Services.Configure<ScanStorageOptions>(builder.Configuration.GetSection(
 builder.Services.AddSingleton<IScanStorage, FileSystemScanStorage>();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<ScanUploadService>();
+
+// OCR: Tesseract (command line) on the host computer, run in the background.
+builder.Services.Configure<OcrOptions>(builder.Configuration.GetSection("Ocr"));
+builder.Services.AddSingleton<ITesseractRunner, TesseractCliRunner>();
+if (OperatingSystem.IsWindows())
+{
+    builder.Services.AddSingleton<ISignatureMarkDetector, SignatureMarkDetector>();
+    builder.Services.AddSingleton<IImageCleaner, TableLineCleaner>();
+}
+else
+    builder.Services.AddSingleton<ISignatureMarkDetector, NoSignatureMarkDetector>();
+builder.Services.AddScoped<TicketReader>();
+builder.Services.AddScoped<OcrProcessor>();
+builder.Services.AddSingleton<OcrQueue>();
+builder.Services.AddHostedService<OcrBackgroundService>();
 
 var app = builder.Build();
 
