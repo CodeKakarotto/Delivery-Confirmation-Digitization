@@ -2,6 +2,7 @@ using Confirmations.Api.Data;
 using Confirmations.Api.Data.Entities;
 using Confirmations.Api.Ocr;
 using Confirmations.Api.Scans;
+using Confirmations.Api.Validation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -50,7 +51,8 @@ public sealed class OcrProcessorTests : IDisposable
     {
         using var db = _testDb.NewContext();
         var reader = new TicketReader(runner, signatures ?? new FakeSignatureDetector(new SignatureCheck(true, 0.9f)));
-        var processor = new OcrProcessor(db, _storage, reader, TimeProvider.System, NullLogger<OcrProcessor>.Instance);
+        var processor = new OcrProcessor(db, _storage, reader, new ConfirmationValidator(db, TimeProvider.System),
+            TimeProvider.System, NullLogger<OcrProcessor>.Instance);
         await processor.ProcessAsync(scanId, CancellationToken.None);
     }
 
@@ -187,6 +189,33 @@ public sealed class OcrProcessorTests : IDisposable
         var (ocr, record) = Load(scanId);
         Assert.True(ocr.DeliveryInstructions!.Length <= 2000);
         Assert.True(record.DeliveryInstructions!.Length <= 1000);
+    }
+
+    [Fact]
+    public async Task ProblemsAreFlaggedRightAfterReading()
+    {
+        var scanId = await AddUploadedScanAsync();
+
+        // MF-10003 isn't in this test database's order list, and there's no signature.
+        await ProcessAsync(scanId, FakeTesseractRunner.Returning(TsvBuilder.StandardTicket()),
+            new FakeSignatureDetector(new SignatureCheck(false, 0.9f)));
+
+        using var db = _testDb.NewContext();
+        var flags = db.ValidationFlags.Where(f => f.DeliveryConfirmation.ScanDocumentId == scanId).Select(f => f.Type).ToList();
+        Assert.Contains(FlagType.OrderNotFound, flags);
+        Assert.Contains(FlagType.MissingSignature, flags);
+    }
+
+    [Fact]
+    public async Task UnreadableSheet_IsFlaggedForManualEntry()
+    {
+        var scanId = await AddUploadedScanAsync();
+
+        await ProcessAsync(scanId, FakeTesseractRunner.Crashing());
+
+        using var db = _testDb.NewContext();
+        var flag = db.ValidationFlags.Single(f => f.DeliveryConfirmation.ScanDocumentId == scanId);
+        Assert.Equal(FlagType.OcrFailed, flag.Type);
     }
 
     [Fact]

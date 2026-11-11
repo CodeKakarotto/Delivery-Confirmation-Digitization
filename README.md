@@ -64,7 +64,7 @@ See [SETUP.md](SETUP.md) to run this on a Windows computer.
 - [x] Step 3 – Database design
 - [x] Step 4 – Upload and scan storage (JPEG/PNG; PDF not supported yet)
 - [x] Step 5 – Tesseract OCR (background reading; 10/10 fields correct on 10 fake tickets)
-- [ ] Step 6 – Validation flags
+- [x] Step 6 – Validation flags (missing fields, unknown/duplicate/already-confirmed orders, bad product count, no signature, hard-to-read fields, unreadable sheets)
 - [ ] Step 7 – Review screen
 - [ ] Step 8 – Search dashboard
 - [ ] Step 9 – Exceptions list

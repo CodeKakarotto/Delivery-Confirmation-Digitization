@@ -2,6 +2,7 @@ using System.Globalization;
 using Confirmations.Api.Data;
 using Confirmations.Api.Data.Entities;
 using Confirmations.Api.Scans;
+using Confirmations.Api.Validation;
 using Microsoft.EntityFrameworkCore;
 
 namespace Confirmations.Api.Ocr;
@@ -11,12 +12,14 @@ namespace Confirmations.Api.Ocr;
 /// is kept unchanged in OcrResults; copies go into the Pending record only as
 /// suggestions (never over anything an employee typed, never on a reviewed
 /// record). If reading fails, the record still waits for manual entry.
+/// Afterwards the record is checked and problems are flagged (Step 6).
 /// Logs never contain what was read – only the scan ID and the outcome.
 /// </summary>
 public class OcrProcessor(
     AppDbContext db,
     IScanStorage storage,
     TicketReader reader,
+    ConfirmationValidator validator,
     TimeProvider clock,
     ILogger<OcrProcessor> logger)
 {
@@ -82,6 +85,9 @@ public class OcrProcessor(
                 await db.Entry(record).ReloadAsync(cancellationToken);
             await db.SaveChangesAsync(cancellationToken);
         }
+
+        if (record is not null)
+            await validator.CheckAsync(record.Id, cancellationToken);
 
         logger.LogInformation("OCR finished for scan {ScanId} (failed: {Failed}).", scanId, result.OcrFailed);
     }

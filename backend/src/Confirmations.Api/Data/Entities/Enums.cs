@@ -23,6 +23,8 @@ public enum FlagType
     MissingField,
     OrderNotFound,
     OrderAlreadyConfirmed,
+    /// <summary>Another sheet for the same order is also waiting for review.</summary>
+    DuplicateOrder,
     DuplicateFile,
     InvalidTotalProducts,
     UnknownZone,
