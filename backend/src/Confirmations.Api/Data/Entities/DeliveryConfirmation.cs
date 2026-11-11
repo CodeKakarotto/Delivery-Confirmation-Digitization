@@ -27,6 +27,12 @@ public class DeliveryConfirmation
     /// <summary>"Signature present: yes/no", confirmed by the employee.</summary>
     public bool? SignaturePresent { get; set; }
 
+    /// <summary>Optional "Exceptions / notes" typed by the employee (e.g. "Left at door").</summary>
+    public string? ExceptionNotes { get; set; }
+
+    /// <summary>Why it was rejected or sent to a manager (written by the reviewer).</summary>
+    public string? ReviewerNote { get; set; }
+
     public ConfirmationStatus Status { get; set; } = ConfirmationStatus.Pending;
 
     /// <summary>Who approved or rejected it (from the server login, never the browser).</summary>

@@ -4,15 +4,25 @@ import { ApiStatus } from './ApiStatus'
 import { HistoryPage } from './HistoryPage'
 import { HomePage } from './HomePage'
 import { LoginPage } from './LoginPage'
+import { ReviewPage } from './ReviewPage'
+import { ReviewQueuePage } from './ReviewQueuePage'
 import { UploadPage } from './UploadPage'
 import './App.css'
 
-type Page = 'home' | 'upload' | 'history'
+type Page = 'home' | 'upload' | 'history' | 'review-queue' | 'review'
 
 function App() {
   // undefined = still checking whether someone is already signed in
   const [user, setUser] = useState<User | null | undefined>(undefined)
   const [page, setPage] = useState<Page>('home')
+  const [reviewing, setReviewing] = useState<string | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
+
+  const openQueue = (message: string | null = null) => {
+    setNotice(message)
+    setReviewing(null)
+    setPage('review-queue')
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -47,10 +57,32 @@ function App() {
             </button>
           </div>
           {page === 'home' && (
-            <HomePage onOpenUpload={() => setPage('upload')} onOpenHistory={() => setPage('history')} />
+            <HomePage
+              onOpenUpload={() => setPage('upload')}
+              onOpenReview={() => openQueue()}
+              onOpenHistory={() => setPage('history')}
+            />
           )}
           {page === 'upload' && <UploadPage onBack={() => setPage('home')} />}
           {page === 'history' && <HistoryPage onBack={() => setPage('home')} />}
+          {page === 'review-queue' && (
+            <ReviewQueuePage
+              notice={notice}
+              onBack={() => setPage('home')}
+              onOpen={(id) => {
+                setReviewing(id)
+                setPage('review')
+              }}
+            />
+          )}
+          {page === 'review' && reviewing && (
+            <ReviewPage
+              key={reviewing}
+              confirmationId={reviewing}
+              onBack={() => openQueue()}
+              onDone={(message) => openQueue(message)}
+            />
+          )}
         </>
       )}
 
