@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { uploadScan, type UploadResult } from './api'
+import { RecentOrders } from './RecentOrders'
 
 type Props = { onBack: () => void }
 
@@ -8,6 +9,7 @@ export function UploadPage({ onBack }: Props) {
   const [files, setFiles] = useState<File[]>([])
   const [results, setResults] = useState<UploadResult[]>([])
   const [busy, setBusy] = useState(false)
+  const [uploadsDone, setUploadsDone] = useState(0)
 
   async function handleUpload() {
     setBusy(true)
@@ -20,6 +22,7 @@ export function UploadPage({ onBack }: Props) {
     }
     setBusy(false)
     setFiles([])
+    setUploadsDone((n) => n + 1) // reload the Orders list below
   }
 
   return (
@@ -76,6 +79,8 @@ export function UploadPage({ onBack }: Props) {
           ))}
         </ul>
       )}
+
+      <RecentOrders refreshKey={uploadsDone} />
 
       <div className="page-actions">
         <button type="button" onClick={onBack}>

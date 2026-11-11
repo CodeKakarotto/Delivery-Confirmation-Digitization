@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { getCurrentUser, logout, type User } from './api'
 import { ApiStatus } from './ApiStatus'
+import { HistoryPage } from './HistoryPage'
 import { HomePage } from './HomePage'
 import { LoginPage } from './LoginPage'
 import { UploadPage } from './UploadPage'
 import './App.css'
 
-type Page = 'home' | 'upload'
+type Page = 'home' | 'upload' | 'history'
 
 function App() {
   // undefined = still checking whether someone is already signed in
@@ -45,8 +46,11 @@ function App() {
               Sign out
             </button>
           </div>
-          {page === 'home' && <HomePage onOpenUpload={() => setPage('upload')} />}
+          {page === 'home' && (
+            <HomePage onOpenUpload={() => setPage('upload')} onOpenHistory={() => setPage('history')} />
+          )}
           {page === 'upload' && <UploadPage onBack={() => setPage('home')} />}
+          {page === 'history' && <HistoryPage onBack={() => setPage('home')} />}
         </>
       )}
 

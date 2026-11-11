@@ -71,9 +71,11 @@ describe('Scan delivery sheets page', () => {
     expect(screen.getByText('sheet-1.jpg')).toBeTruthy()
     expect(screen.getByText('notes.jpg')).toBeTruthy()
 
-    // One request per file, sent with the login cookie.
-    expect(fetchMock).toHaveBeenCalledTimes(2)
-    for (const [url, init] of fetchMock.mock.calls) {
+    // One upload request per file, sent with the login cookie.
+    // (The page also loads the "Orders" list; those requests aren't uploads.)
+    const uploads = fetchMock.mock.calls.filter(([, init]) => init?.method === 'POST')
+    expect(uploads).toHaveLength(2)
+    for (const [url, init] of uploads) {
       expect(url).toBe('/api/scans')
       expect(init?.method).toBe('POST')
       expect(init?.credentials).toBe('include')
